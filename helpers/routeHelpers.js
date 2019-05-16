@@ -1,6 +1,13 @@
 const Joi = require('joi');
 
 module.exports = {
+  schemas: {
+    authSchema: Joi.object().keys({
+      email: Joi.string().email().required(),
+      password: Joi.string().required()
+    })
+  },
+  
   validateBody: (schema) => {
     return (req, res, next) => {
       const result = Joi.validate(req.body, schema);
@@ -15,12 +22,5 @@ module.exports = {
       req.value['body'] = result.value;
       next();
     }
-  },
-
-  schemas: {
-    authSchema: Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().required()
-    })
   }
 }

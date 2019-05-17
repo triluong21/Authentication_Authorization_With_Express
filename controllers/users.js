@@ -5,7 +5,7 @@ const { JWT_SECRET } = require('../configuration/index');
 signToken = user => {
   return JWT.sign({
     iss: 'Tri Luong',
-    sub: 'user.id',
+    sub: user.id,
     iat: new Date().getTime(),
     exp: new Date().setDate(new Date().getDate() + 1) // current time plus 1 day ahead
   }, JWT_SECRET);
@@ -34,6 +34,7 @@ module.exports = {
   },
   secret: async (req, res, next) => {
     console.log("UsersController.secret() called.")
+    res.status(200).json({ secret: "resources" });
   }
 
 }

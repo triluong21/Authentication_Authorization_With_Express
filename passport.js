@@ -2,14 +2,14 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
-const { JWT_SECRET} = require('./configuration/index');
+const { JWT_SECRET } = require('./configuration/index');
 const User = require('./models/user');
 
 // jSON WEB TOKE Strategy
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
   secretOrKey: JWT_SECRET
-}, async(payload, done) => {
+}, async (payload, done) => {
   try {
     // find the user specified in token
     const user = await User.findById(payload.sub);
@@ -21,7 +21,7 @@ passport.use(new JwtStrategy({
 
     // Otherwise, return the user
     done(null, user);
-  } catch(error) {
+  } catch (error) {
     done(error, false);
   }
 }));
@@ -29,19 +29,27 @@ passport.use(new JwtStrategy({
 // LOCAL Strategy
 passport.use(new LocalStrategy({
   usernameField: 'email'
-}, async (email, passport, done) => {
-  // find the user given the email
-  const user = await User.findOne({ email });
+}, async (email, password, done) => {
+  try {
+    // find the user given the email
+    const user = await User.findOne({ email });
 
-  // If not, handle it
-  if (!user) {
-    return done(null, false);
-  }
-  
-  // Check if the password is correct
+    // If not, handle it
+    if (!user) {
+      return done(null, false);
+    }
 
-  // If not, handle it
+    // Check if the password is correct
+    const isMatch = await user.isValidPassword(password);
 
-  // Otherwise return the user
+    // If not, handle it
+    if (!isMatch) {
+      return done(null, false);
+    };
 
+    // Otherwise return the user
+    done(null, user);
+  } catch (error) {
+    done(error, false);
+  };
 }));

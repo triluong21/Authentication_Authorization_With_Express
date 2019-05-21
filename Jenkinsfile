@@ -1,12 +1,9 @@
-pipeline {
-  agent any
+node ('docker') {
   def gitVars
   boolean jobSuccess = true
   try {
-    stages {
-      stage('Install') {
-        sh 'yarn install'
-      }
+    stage('Install') {
+      sh 'yarn install'
     }
   } catch (e) {
     jobSuccess = false

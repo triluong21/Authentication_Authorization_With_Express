@@ -1,5 +1,5 @@
 node ('docker') {
-  def gitVars
+  // def gitVars
   boolean jobSuccess = true
   try {
     stage('Install') {
@@ -8,9 +8,9 @@ node ('docker') {
   } catch (e) {
     jobSuccess = false
     throw e
-  } finally {
-    stage('Notify') {
-      slackHelper(jobSuccess, gitVars, '@tluong')
-    }
+  // } finally {
+  //   stage('Notify') {
+  //     slackHelper(jobSuccess, gitVars, '@tluong')
+  //   }
   }
 }

@@ -1,6 +1,7 @@
 node ('docker') {
   def gitVars
   try {
+    nodeHelper()
     stage('Checkout') {
       gitVars = checkout scm
     }
@@ -9,5 +10,9 @@ node ('docker') {
     }
   } catch (e) {
     throw e
+  } finally {
+    stage('Notify') {
+      sh 'yarn install'
+    }
   }
 }

@@ -1,16 +1,13 @@
 node ('docker') {
-  // def gitVars
-  boolean jobSuccess = true
+  def gitVars
   try {
+    stage('Checkout') {
+      gitVars = checkout scm
+    }
     stage('Install') {
       sh 'yarn install'
     }
   } catch (e) {
-    jobSuccess = false
     throw e
-  // } finally {
-  //   stage('Notify') {
-  //     slackHelper(jobSuccess, gitVars, '@tluong')
-  //   }
   }
 }

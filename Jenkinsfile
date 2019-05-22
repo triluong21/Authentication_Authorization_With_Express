@@ -5,7 +5,7 @@ node ('docker') {
     stage('Checkout') {
       gitVars = checkout scm
     }
-    stage('Install') {
+    stage('Yarn Install') {
       sh 'yarn install'
     }
   } catch (e) {

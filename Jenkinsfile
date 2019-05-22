@@ -1,18 +1,21 @@
-node ('docker') {
-  def gitVars
-  try {
-    nodeHelper()
-    stage('Checkout') {
-      gitVars = checkout scm
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
     }
-    stage('YInstall') {
-      sh 'yarn install'
-    }
-  } catch (e) {
-    throw e
-  } finally {
-    stage('Notify') {
-      sh 'yarn install'
-    }
-  }
 }

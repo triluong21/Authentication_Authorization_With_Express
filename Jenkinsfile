@@ -3,7 +3,7 @@ node ('docker') {
     stage('echo') {
         echo 'start'
     }    
-    stage('XInstall') {
+    stage('Install') {
         sh 'yarn install'
     }
   } catch (e) {
